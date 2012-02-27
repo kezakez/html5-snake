@@ -12,8 +12,8 @@ function Board(boardWidth, boardHeight) {
 	this.checkInBoard = function (position) {
 		if (position[0] < 0) return false;
 		if (position[1] < 0) return false;
-		if (position[0] >= this.width-1) return false;
-		if (position[1] >= this.height-1) return false;
+		if (position[0] >= this.width) return false;
+		if (position[1] >= this.height) return false;
 		return true;
 	}
 }

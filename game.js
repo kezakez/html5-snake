@@ -33,6 +33,7 @@ $(function() {
 		var result = snake.moveNext();
 		if (!result) {
 			clearInterval(animationLoopId);
+			document.getElementById("audio").pause();
 		} else {
 			draw();
 		}
@@ -48,8 +49,11 @@ $(function() {
 		} else if (event.keyCode === 37) {
 			snake.setDirection(DirectionEnum.WEST);
 		}
+		if (!animationLoopId) {
+			animationLoopId = setInterval(animate, 500);
+			document.getElementById("audio").play();
+		}
 	});
 	
 	draw();
-	animationLoopId = setInterval(animate, 500);
 });

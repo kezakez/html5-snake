@@ -104,6 +104,25 @@ test("test snake detects collision with board", function() {
 	deepEqual(position[2], [4,0]);
 	deepEqual(position[3], [4,-1]);
 });
+
+test("test snake detects collision with board right", function() {
+	var snake = new Snake([0,0], 4, DirectionEnum.EAST);
+
+	expect(12);
+
+	for (var i = 0; i < 6; i++) {
+		equal(snake.moveNext(), true);
+	}
+	equal(snake.moveNext(), false);
+	
+	var position = snake.getPositions();
+	
+	equal(position.length, 4);
+	deepEqual(position[0], [7,0]);
+	deepEqual(position[1], [8,0]);
+	deepEqual(position[2], [9,0]);
+	deepEqual(position[3], [10,0]);
+});
     </script>
   </head>
   <body>
