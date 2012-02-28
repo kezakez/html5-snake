@@ -24,9 +24,24 @@ function Board(boardWidth, boardHeight) {
 		return Math.floor(Math.random() * (max - 1));  
 	}
 	
-	this.addFood = function (position) {
+	this.addFood = function (snake, position) {
+		if (!snake) {
+			throw "snake must be provided.";
+		}
 		if (!position) {
-			position = [getRandomInt(this.width), getRandomInt(this.height)]
+			position = [getRandomInt(this.width), getRandomInt(this.height)];
+			if (hitTest(snake.getPositions(), position) !== -1) {
+				var available = [];
+				for (var x = 0; x < this.width; x++) {
+					for (var y = 0; y < this.height; y++) {
+						position = [x, y];
+						if (hitTest(snake.getPositions(), position) === -1) {
+							available.push(position);
+						}
+					}
+				}
+				position = available[getRandomInt(available.length)];
+			}
 		}
 		
 		this.foodPositions.push(position);
@@ -97,7 +112,7 @@ function Snake(tailPos, snakeLen, dir, brd) {
 			// shorten the tail
 			positions.shift();
 		} else {
-			board.addFood();
+			board.addFood(this);
 		}
 
 		// check for collisions with myself

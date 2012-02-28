@@ -1,7 +1,7 @@
 $(function() {
-	var board = new Board(20, 20);
+	var board = new Board(5, 5);
 	var snake = new Snake([0,0], 4, DirectionEnum.EAST, board);
-	board.addFood();	
+	board.addFood(snake);	
 	var animationLoopId;
 
 	var field = $("canvas");

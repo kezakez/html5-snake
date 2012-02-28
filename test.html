@@ -127,7 +127,7 @@ test("test snake detects collision with board right", function() {
 test("test snake gets bigger when it eats food", function() {
 	var board = new Board(10,10);
 	var snake = new Snake([0,0], 4, DirectionEnum.EAST, board);
-	board.addFood([4,0]);
+	board.addFood(snake, [4,0]);
 
 	expect(6);
 
@@ -145,7 +145,8 @@ test("test snake gets bigger when it eats food", function() {
 
 test("test addfood adds random in the board", function() {
 	var board = new Board(10,10);
-	board.addFood();
+	var snake = new Snake([0,0], 4, DirectionEnum.EAST, board);
+	board.addFood(snake);
 	
 	expect(5);
 	
@@ -157,6 +158,21 @@ test("test addfood adds random in the board", function() {
 	equal(foodY >= 0, true);
 	equal(foodX <= board.width, true);
 	equal(foodY <= board.width, true);
+});
+
+test("test addfood does not add on top of snake", function() {
+	var board = new Board(5,1);
+	var snake = new Snake([0,0], 4, DirectionEnum.EAST, board);
+	board.addFood(snake);
+	
+	expect(3);
+	
+	var foodX = board.foodPositions[0][0];
+	var foodY = board.foodPositions[0][1];
+	
+	equal(board.foodPositions.length, 1);
+	equal(foodX, 4);
+	equal(foodY, 0);
 });
     </script>
   </head>
