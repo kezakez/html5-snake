@@ -5,9 +5,38 @@ DirectionEnum = {
 	WEST : "West"
 };
 
+function hitTest(testArray, testPosition) {
+	for (var i = 0; i < testArray.length; i++) {
+		if (testArray[i][0] === testPosition[0] && testArray[i][1] === testPosition[1]) {
+			return i;
+		}
+	}
+	return -1;
+}
+
 function Board(boardWidth, boardHeight) {
 	this.width = boardWidth;
 	this.height = boardHeight;
+	this.foodPositions = [];
+
+	function getRandomInt(max)  
+	{  
+		return Math.floor(Math.random() * (max - 1));  
+	}
+	
+	this.addFood = function (position) {
+		if (!position) {
+			position = [getRandomInt(this.width), getRandomInt(this.height)]
+		}
+		
+		this.foodPositions.push(position);
+	}
+
+	this.foodFound = function (position) {
+		var result = hitTest(this.foodPositions, position);
+		this.foodPositions = this.foodPositions.splice(result, 1);
+		return result !== -1;
+	}
 	
 	this.checkInBoard = function (position) {
 		if (position[0] < 0) return false;
@@ -57,19 +86,23 @@ function Snake(tailPos, snakeLen, dir, brd) {
 	};
 
 	this.moveNext = function () {
-		// shorten the tail
-		positions.shift();
 		// find the new head
 		var head = positions.pop();
 		var newHead = getNext(head, direction);
 		positions.push(head);
-		var result = true;
-		// check for collisions with myself
-		for (var i = 0; i < positions.length; i++) {
-			if (positions[i][0] === newHead[0] && positions[i][1] === newHead[1]) {
-				result = false;
-			}
+		
+		// check if we ate food
+		var ateFood = board.foodFound(newHead);
+		if (!ateFood) {
+			// shorten the tail
+			positions.shift();
+		} else {
+			board.addFood();
 		}
+
+		// check for collisions with myself
+		var result = (hitTest(positions, newHead) === -1);
+
 		// or the board
 		if (!board.checkInBoard(newHead)) {
 			result = false;

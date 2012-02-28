@@ -1,6 +1,7 @@
 $(function() {
 	var board = new Board(20, 20);
 	var snake = new Snake([0,0], 4, DirectionEnum.EAST, board);
+	board.addFood();	
 	var animationLoopId;
 
 	var field = $("canvas");
@@ -27,6 +28,15 @@ $(function() {
 				fillStyle: "green", x: cellSpacing + x * outerCellWidth, y: cellSpacing + y * outerCellHeight, width: innerCellWidth, height: innerCellHeight, fromCenter: false
 			});
 		}
+		var fx, fy;
+		var food = board.foodPositions;
+		for (var i = 0; i < food.length; i++) {
+			fx = food[i][0];
+			fy = food[i][1];
+			field.drawRect({
+				fillStyle: "blue", x: cellSpacing + fx * outerCellWidth, y: cellSpacing + fy * outerCellHeight, width: innerCellWidth, height: innerCellHeight, fromCenter: false
+			});
+		}
 	}
 
 	function animate() {
@@ -48,6 +58,12 @@ $(function() {
 			snake.setDirection(DirectionEnum.SOUTH);
 		} else if (event.keyCode === 37) {
 			snake.setDirection(DirectionEnum.WEST);
+		} else if (event.keyCode === 83) {
+			// s key
+			document.getElementById("audio").pause();
+		} else if (event.keyCode === 77) {
+			// m key
+			document.getElementById("audio").play();
 		}
 		if (!animationLoopId) {
 			animationLoopId = setInterval(animate, 500);

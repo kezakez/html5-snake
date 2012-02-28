@@ -123,6 +123,41 @@ test("test snake detects collision with board right", function() {
 	deepEqual(position[2], [9,0]);
 	deepEqual(position[3], [10,0]);
 });
+
+test("test snake gets bigger when it eats food", function() {
+	var board = new Board(10,10);
+	var snake = new Snake([0,0], 4, DirectionEnum.EAST, board);
+	board.addFood([4,0]);
+
+	expect(6);
+
+	snake.moveNext();
+	
+	var position = snake.getPositions();
+	
+	equal(position.length, 5);
+	deepEqual(position[0], [0,0]);
+	deepEqual(position[1], [1,0]);
+	deepEqual(position[2], [2,0]);
+	deepEqual(position[3], [3,0]);
+	deepEqual(position[4], [4,0]);
+});
+
+test("test addfood adds random in the board", function() {
+	var board = new Board(10,10);
+	board.addFood();
+	
+	expect(5);
+	
+	var foodX = board.foodPositions[0][0];
+	var foodY = board.foodPositions[0][1];
+	
+	equal(board.foodPositions.length, 1);
+	equal(foodX >= 0, true);
+	equal(foodY >= 0, true);
+	equal(foodX <= board.width, true);
+	equal(foodY <= board.width, true);
+});
     </script>
   </head>
   <body>
